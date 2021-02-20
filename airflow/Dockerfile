@@ -13,7 +13,7 @@ ENV AIRFLOW_HOME=${AIRFLOW_USER_HOME}
 USER root
 # directories to be modified
 
-RUN chgrp -R 0 ${AIRFLOW_HOME} && chmod -R g=u ${AIRFLOW_HOME}
+
 
 
 # Never prompt the user for choices on installation/configuration of packages
@@ -74,9 +74,10 @@ RUN set -ex \
         /usr/share/doc-base
 
 COPY entrypoint.sh /entrypoint.sh
-COPY airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
-RUN chown -R airflow: ${AIRFLOW_USER_HOME}
+RUN chgrp -R 0 ${AIRFLOW_HOME} && chmod -R g=u ${AIRFLOW_HOME}
+
+COPY airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 EXPOSE 8080 5555 8793
 
