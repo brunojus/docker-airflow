@@ -13,15 +13,11 @@ ENV AIRFLOW_HOME=${AIRFLOW_USER_HOME}
 USER root
 # directories to be modified
 
-
-
-
 # Never prompt the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
-COPY requirements.txt ./
-COPY . .
+COPY requirements.txt /requirements.txt
 
 RUN pip install -r requirements.txt --no-cache-dir
 
