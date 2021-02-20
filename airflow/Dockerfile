@@ -5,6 +5,16 @@
 FROM python:3.8-slim-buster
 LABEL maintainer="Bruno"
 
+# Airflow
+ARG AIRFLOW_VERSION=2.0.0
+ARG AIRFLOW_USER_HOME=/usr/local/airflow
+ENV AIRFLOW_HOME=${AIRFLOW_USER_HOME}
+
+USER root
+# directories to be modified
+
+RUN chgrp -R 0 ${AIRFLOW_HOME} && chmod -R g=u ${AIRFLOW_HOME}
+
 
 # Never prompt the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
@@ -13,10 +23,7 @@ ENV TERM linux
 COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
 
-# Airflow
-ARG AIRFLOW_VERSION=2.0.0
-ARG AIRFLOW_USER_HOME=/usr/local/airflow
-ENV AIRFLOW_HOME=${AIRFLOW_USER_HOME}
+
 
 # Disable noisy "Handling signal" log messages:
 # ENV GUNICORN_CMD_ARGS --log-level WARNING
@@ -73,7 +80,7 @@ RUN chown -R airflow: ${AIRFLOW_USER_HOME}
 
 EXPOSE 8080 5555 8793
 
-USER 1001
+
 WORKDIR ${AIRFLOW_USER_HOME}
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["webserver"]
