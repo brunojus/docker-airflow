@@ -20,7 +20,9 @@ USER root
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
-COPY requirements.txt .
+COPY requirements.txt ./
+COPY . .
+
 RUN pip install -r requirements.txt --no-cache-dir
 
 
