@@ -80,5 +80,8 @@ COPY airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 EXPOSE 8080 5555 8793
 
-ENTRYPOINT ["/usr/local/airflow/entrypoint.sh"]
+RUN chgrp -R 0 entrypoint.sh && \
+    chmod -R g=u entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["webserver"]
