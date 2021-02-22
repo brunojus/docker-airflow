@@ -19,12 +19,12 @@ ENV TERM linux
 
 
 
-COPY requirements.txt requirements.txt
+COPY requirements.txt /tmp/build/inputs/requirements.txt
 
-RUN chgrp -R 0 requirements.txt && \
-    chmod -R g=u requirements.txt
+RUN chgrp -R 0 /tmp/build/inputs/requirements.txt && \
+    chmod -R g=u /tmp/build/inputs/requirements.txt
 
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install -r /tmp/build/inputs/requirements.txt --no-cache-dir
 
 # Disable noisy "Handling signal" log messages:
 # ENV GUNICORN_CMD_ARGS --log-level WARNING
