@@ -22,7 +22,7 @@ WORKDIR  ${AIRFLOW_USER_HOME}
 RUN chgrp -R 0 ${AIRFLOW_USER_HOME} && \
     chmod -R g=u ${AIRFLOW_USER_HOME}
 
-COPY requirements.txt  ${AIRFLOW_USER_HOME}/
+COPY airflow/requirements.txt  ${AIRFLOW_USER_HOME}/requirements.txt
 
 RUN chgrp -R 0 requirements.txt && \
     chmod -R g=u requirements.txt
@@ -54,10 +54,6 @@ RUN set -ex \
         rsync \
         netcat \
         locales \
-    && sed -i 's/^# en_US.UTF-8 UTF-8$/en_US.UTF-8 UTF-8/g' /etc/locale.gen \
-    && locale-gen \
-    && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
-    && useradd -ms /bin/bash -d ${AIRFLOW_USER_HOME} airflow \
     && pip install pip setuptools wheel  --no-cache-dir\
     && pip install pytz  --no-cache-dir\
     && pip install pyOpenSSL  --no-cache-dir\
@@ -77,9 +73,9 @@ RUN set -ex \
         /usr/share/doc \
         /usr/share/doc-base
 
-COPY entrypoint.sh /entrypoint.sh
+COPY airflow/entrypoint.sh /entrypoint.sh
 
-COPY airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
+COPY airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 
 EXPOSE 8080 5555 8793
