@@ -17,11 +17,11 @@ USER root
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
-COPY requirements.txt /requirements.txt
+RUN chgrp -R 0 requirements.txt && \
+    chmod -R g=u requirements.txt
 
+COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
-
-
 
 # Disable noisy "Handling signal" log messages:
 # ENV GUNICORN_CMD_ARGS --log-level WARNING
@@ -73,12 +73,14 @@ RUN set -ex \
 
 COPY entrypoint.sh /entrypoint.sh
 
-RUN chgrp -R 0 ${AIRFLOW_HOME} && chmod -R g=u ${AIRFLOW_HOME}
-
 COPY airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
-EXPOSE 8080 5555 8793
+RUN chown -R airflow: ${AIRFLOW_USER_HOME}
 
+RUN chgrp -R 0 ${AIRFLOW_USER_HOME} && \
+    chmod -R g=u ${AIRFLOW_USER_HOME}
+
+EXPOSE 8080 5555 8793
 
 WORKDIR ${AIRFLOW_USER_HOME}
 ENTRYPOINT ["/entrypoint.sh"]
