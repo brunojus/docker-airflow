@@ -73,13 +73,12 @@ RUN set -ex \
         /usr/share/doc \
         /usr/share/doc-base
 
-COPY airflow/entrypoint.sh /entrypoint.sh
+COPY airflow/entrypoint.sh ${AIRFLOW_USER_HOME}/entrypoint.sh
 
 COPY airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 
 EXPOSE 8080 5555 8793
 
-WORKDIR ${AIRFLOW_USER_HOME}
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["webserver"]
