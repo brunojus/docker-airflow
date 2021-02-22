@@ -17,10 +17,13 @@ USER root
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
+
+
+COPY requirements.txt requirements.txt
+
 RUN chgrp -R 0 requirements.txt && \
     chmod -R g=u requirements.txt
 
-COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
 
 # Disable noisy "Handling signal" log messages:
