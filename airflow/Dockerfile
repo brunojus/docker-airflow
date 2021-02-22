@@ -10,9 +10,6 @@ ARG AIRFLOW_VERSION=2.0.0
 ARG AIRFLOW_USER_HOME=/usr/local/airflow
 ENV AIRFLOW_HOME=${AIRFLOW_USER_HOME}
 
-# directories to be modified
-
-# Never prompt the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
@@ -28,9 +25,6 @@ RUN chgrp -R 0 requirements.txt && \
     chmod -R g=u requirements.txt
 
 RUN pip install -r requirements.txt --no-cache-dir
-
-# Disable noisy "Handling signal" log messages:
-# ENV GUNICORN_CMD_ARGS --log-level WARNING
 
 RUN set -ex \
     && buildDeps=' \
@@ -76,7 +70,6 @@ RUN set -ex \
 COPY airflow/entrypoint.sh ${AIRFLOW_USER_HOME}/entrypoint.sh
 
 COPY airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
-
 
 EXPOSE 8080 5555 8793
 
