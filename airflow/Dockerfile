@@ -80,5 +80,5 @@ COPY airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 EXPOSE 8080 5555 8793
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/airflow/entrypoint.sh"]
 CMD ["webserver"]
