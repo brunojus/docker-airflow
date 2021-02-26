@@ -19,7 +19,9 @@ WORKDIR  ${AIRFLOW_USER_HOME}
 RUN chgrp -R 0 ${AIRFLOW_USER_HOME} && \
     chmod -R g=u ${AIRFLOW_USER_HOME}
 
-COPY airflow/requirements.txt  ${AIRFLOW_USER_HOME}/requirements.txt
+COPY requirements.txt  ${AIRFLOW_USER_HOME}/requirements.txt
+
+COPY ../dags/  ${AIRFLOW_USER_HOME}/dags/
 
 RUN chgrp -R 0 requirements.txt && \
     chmod -R g=u requirements.txt
@@ -67,9 +69,9 @@ RUN set -ex \
         /usr/share/doc \
         /usr/share/doc-base
 
-COPY airflow/entrypoint.sh ${AIRFLOW_USER_HOME}/entrypoint.sh
+COPY entrypoint.sh ${AIRFLOW_USER_HOME}/entrypoint.sh
 
-COPY airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
+COPY airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 EXPOSE 8080 5555 8793
 
